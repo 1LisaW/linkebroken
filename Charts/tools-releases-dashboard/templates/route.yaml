@@ -1,0 +1,22 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: tools-linkebroken-{{ .Values.release }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: tools-linkebroken
+    release: {{ .Values.release }}
+  annotations:
+    haproxy.router.openshift.io/timeout: 4m
+    openshift.io/host.generated: "true"
+spec:
+  host: {{ .Values.host }}
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: tools-linkebroken-{{ .Values.release }}
+    weight: 100
+status:
+  ingress: []

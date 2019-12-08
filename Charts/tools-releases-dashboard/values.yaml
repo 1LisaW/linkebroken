@@ -1,0 +1,6 @@
+namespace: tools-linkebroken
+image:
+  namespace: site
+  version: latest
+  autoDeploy: true
+host: linkebroken.utm.sigma.sbrf.ru

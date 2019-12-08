@@ -1,0 +1,18 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tools-linkebroken-{{ .Values.release }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: tools-linkebroken
+    release: {{ .Values.release }}
+spec:
+  type: ClusterIP
+  selector:
+    app: tools-linkebroken
+    release: {{ .Values.release }}
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
