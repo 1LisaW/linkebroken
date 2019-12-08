@@ -1,0 +1,33 @@
+.results {
+    ul {
+        padding-left: 20px;
+        list-style: none;
+    }
+
+    &__page {
+        color: #FFF;
+        padding: 1px 2px;
+
+        &_ok {
+            background: green;
+        }
+        &_broken {
+            background: red;
+        }
+    }
+
+    &__link {
+        color: #FFF;
+        padding: 1px 2px;
+
+        &_ok {
+            background: green;
+        }
+        &_broken {
+            background: red;
+        }
+        &_skipped {
+            background: orange;
+        }
+    }
+}

@@ -201,7 +201,7 @@ module.exports = env => {
                 filename: './index.html',
                 chunksSortMode: 'manual',
                 chunks: ['vendor', 'app'],
-                title: `vaarwater`,
+                title: `LinkeBroken`,
             }),
         ],
 
