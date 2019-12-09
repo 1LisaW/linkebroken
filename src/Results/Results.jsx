@@ -5,6 +5,7 @@ import Filters from './Filters/Filters';
 
 import { STATUS_SKIPPED, STATUS_BROKEN, STATUS_OK } from '../constants';
 import pluralize from './pluralize';
+import {getCsv, getCsvName} from './report';
 
 import './Results.css';
 
@@ -83,23 +84,44 @@ function Header({
         return urls[pageUrl].links.filter(({ state }) => state === STATUS_BROKEN).length;
     }).reduce((sum, cur) => sum + parseInt(cur, 10), 0);
 
+    const [reportGenerated, setReportGenerated] = useState(false);
+
     if (!startDate) {
+        if (!Object.keys(urls).length) {
+            return (
+                <h2>Ничего нет</h2>
+            );
+        }
+        if (reportGenerated) {
+            return (
+                <h2>
+                    <a key={getCsvName()} href={getCsv(urls)} download={getCsvName()}>
+                        Скачать {getCsvName()} еще раз
+                    </a>
+                </h2>
+            )
+        }
         return (
-            <h2>Жду приказа</h2>
+            <h2>
+                <a href="#" onClick={() => setReportGenerated(true)}>Сгенерировать отчет</a>
+            </h2>
         );
+    }
+    if (reportGenerated) {
+        setReportGenerated(false);
     }
 
     return (
-        <h2>
-            Начато: {startDate.toLocaleDateString('ru')} {startDate.toLocaleTimeString('ru')}.
-            {' '}
-            В очереди {queue.length} {pluralize(queue.length, ['ссылка', 'ссылки', 'ссылок'])},
-            проверено {urlsKeys.length} {pluralize(urlsKeys.length, ['ссылка', 'ссылки', 'ссылок'])}
-            {errors ?
-                `, ${errors} ${pluralize(errors, ['проблема найдена', 'проблемы найдено', 'проблем найдено'])}` :
-                ''
-            }
-        </h2>
+            <h2>
+                Начато: {startDate.toLocaleDateString('ru')} {startDate.toLocaleTimeString('ru')}.
+                {' '}
+                В очереди {queue.length} {pluralize(queue.length, ['ссылка', 'ссылки', 'ссылок'])},
+                проверено {urlsKeys.length} {pluralize(urlsKeys.length, ['ссылка', 'ссылки', 'ссылок'])}
+                {errors ?
+                    `, ${errors} ${pluralize(errors, ['проблема найдена', 'проблемы найдено', 'проблем найдено'])}` :
+                    ''
+                }
+            </h2>
     );
 }
 

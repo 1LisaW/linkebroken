@@ -35,6 +35,10 @@ export default function App() {
                 ...options,
                 started: false,
             });
+            setResults({
+                ...results,
+                startDate: null,
+            });
             return;
         }
 
