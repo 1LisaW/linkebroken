@@ -9,6 +9,7 @@
     "dev:back": "SERVER_DEMO=1 npm run back",
     "dev:front": "webpack-dev-server --env.development --env.server --hot --display-error-details --progress",
     "build": "webpack --env.production --display-error-details",
+    "lint": "eslint server/**/*.js* src/**/*.js*",
     "preversion": "git rev-parse --abbrev-ref HEAD",
     "postversion": "git push origin HEAD && git push origin HEAD --follow-tags"
   },

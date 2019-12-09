@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {STATUS_BROKEN, STATUS_OK, STATUS_REDIRECT, STATUS_SKIPPED} from "./constants";
+import {STATUS_BROKEN, STATUS_OK, STATUS_REDIRECT, STATUS_SKIPPED} from "../../constants";
 
 import './LinkInfo.css';
 

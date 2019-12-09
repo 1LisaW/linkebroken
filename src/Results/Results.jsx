@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import LinkInfo from './LinkInfo';
-import Filters from './Filters';
+import LinkInfo from './LinkInfo/LinkInfo';
+import Filters from './Filters/Filters';
 
-import { STATUS_SKIPPED, STATUS_BROKEN, STATUS_OK } from './constants';
-import { pluralize } from './utils';
+import { STATUS_SKIPPED, STATUS_BROKEN, STATUS_OK } from '../constants';
+import pluralize from './pluralize';
 
 import './Results.css';
 

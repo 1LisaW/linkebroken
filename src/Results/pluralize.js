@@ -1,4 +1,4 @@
-export function pluralize(value, [one, two, five] = ['месяц', 'месяца', 'месяцев']) {
+export default function pluralize(value, [one, two, five] = ['месяц', 'месяца', 'месяцев']) {
     let number = Math.abs(value) % 100;
 
     if (number >= 5 && number <= 20) {
@@ -10,10 +10,8 @@ export function pluralize(value, [one, two, five] = ['месяц', 'месяца
     if (number === 1) {
         return one;
     }
-
     if (number >= 2 && number <= 4) {
         return two;
     }
-
     return five;
 }

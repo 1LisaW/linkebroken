@@ -7,7 +7,7 @@ const linkinator = require('linkinator-css-edition');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const config = require('../config');
+const config = require('./config');
 
 if (conf.error) {
     throw result.error;

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import Form from './Form';
-import Results from './Results';
+import Form from './Form/Form';
+import Results from './Results/Results';
+
 import { crawl } from './api';
-import config from '../config';
+import config from '../server/config';
 
 import { STATUS_OK } from './constants';
 
