@@ -5,7 +5,7 @@ import Filters from './Filters/Filters';
 
 import { STATUS_SKIPPED, STATUS_BROKEN, STATUS_OK } from '../constants';
 import pluralize from './pluralize';
-import {getCsv, getCsvName} from './report';
+import { TYPE_ALL, TYPE_BROKEN, getCsv, getCsvName } from './report';
 
 import './Results.css';
 
@@ -84,7 +84,7 @@ function Header({
         return urls[pageUrl].links.filter(({ state }) => state === STATUS_BROKEN).length;
     }).reduce((sum, cur) => sum + parseInt(cur, 10), 0);
 
-    const [reportGenerated, setReportGenerated] = useState(false);
+    const [reportGenerated, setReportGenerated] = useState(0);
 
     if (!startDate) {
         if (!Object.keys(urls).length) {
@@ -92,23 +92,31 @@ function Header({
                 <h2>Ничего нет</h2>
             );
         }
-        if (reportGenerated) {
-            return (
-                <h2>
-                    <a key={getCsvName()} href={getCsv(urls)} download={getCsvName()}>
-                        Скачать {getCsvName()} еще раз
-                    </a>
-                </h2>
-            )
-        }
+        const reportName = getCsvName(reportGenerated);
+
         return (
             <h2>
-                <a href="#" onClick={() => setReportGenerated(true)}>Сгенерировать отчет</a>
+                Сгенерировать
+                {' '}
+                <a href="#" onClick={() => setReportGenerated(TYPE_ALL)}>отчет со всеми ссылками</a>
+                {' '}
+                или
+                {' '}
+                <a href="#" onClick={() => setReportGenerated(TYPE_BROKEN)}>только с битыми ссылками</a>
+                {!!reportGenerated && (
+                    <>
+                        <br />
+                        <br />
+                        <a key={reportName} href={getCsv(urls, reportGenerated)} download={reportName}>
+                            Скачать {reportName}
+                        </a>
+                    </>
+                )}
             </h2>
         );
     }
     if (reportGenerated) {
-        setReportGenerated(false);
+        setReportGenerated(0);
     }
 
     return (
