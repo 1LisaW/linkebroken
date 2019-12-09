@@ -49,6 +49,16 @@ export default function App() {
 
         (async function process() {
             let pageResult;
+
+            if (results.urls[url]) {
+                console.warn('уже есть в проверенных!', url);
+                setResults({
+                    ...results,
+                    currentUrl: '',
+                });
+                return;
+            }
+
             try {
                 pageResult = await crawl(url);
             } catch (errorData) {
@@ -98,11 +108,6 @@ export default function App() {
                 console.log(`maximum depth is ${level}`);
             }
 
-            if (results.urls[url]) {
-                console.error('уже есть в проверенных!', url);
-                console.error(results.urls);
-            }
-
             // краулер может несколько раз прислать урл,
             // схлопываем, оставляем худший статус?
             const checkedLinks = [];
@@ -144,7 +149,7 @@ export default function App() {
                 ...results,
                 currentUrl: '',
                 urls: newUrls,
-            })
+            });
         })();
     });
 
