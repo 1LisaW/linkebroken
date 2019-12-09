@@ -48,12 +48,11 @@ export default function Form({
                 </select>
             </div>
             <button
-                className={`form__button form__button_${options.started ? 'disabled': ''}`}
+                className={`form__button form__button_${options.started ? 'process': ''}`}
                 type="button"
-                disabled={options.started ? 'disabled': ''}
                 onClick={onStart}
             >
-                Начать
+                {options.started ? 'Стоп': 'Начать'}
             </button>
         </form>
     );

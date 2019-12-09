@@ -67,10 +67,7 @@ function Header({
 
     return (
         <h2>
-            {queue.length > 0 ?
-                `В очереди ${queue.length} ${pluralize(errors, ['ссылка', 'ссылки', 'ссылок'])}` :
-                'Закончено'
-            }
+            В очереди {queue.length} {pluralize(errors, ['ссылка', 'ссылки', 'ссылок'])}
             {errors ?
                 ` (${errors} ${pluralize(errors, ['проблема найдена', 'проблемы найдено', 'проблем найдено'])})` :
                 ''
@@ -80,7 +77,7 @@ function Header({
 }
 
 function getPageModifier(passed) {
-    return passed ? 'ok' : 'broken';
+    return passed ? 'passed' : 'non-passed';
 }
 
 function Page({

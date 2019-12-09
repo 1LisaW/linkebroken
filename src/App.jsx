@@ -53,6 +53,8 @@ export default function App() {
                 pageResult = errorData;
             }
 
+            console.log(`${url} handled with ${pageResult.passed ? 'passed' : 'not passed'}`);
+
             if (level < options.depth) {
                 // текущая страница чеканная
                 if (!results.checked[url]) {
@@ -129,6 +131,23 @@ export default function App() {
 }
 
 function handleStart(options, setOptions, results, setResults) {
+    if (options.started) {
+        console.log('stopping...');
+        setOptions({
+            ...options,
+            started: false,
+        });
+
+        // не теряем найденное
+        setResults({
+            ...results,
+            queue: [],
+            currentUrl: '',
+        });
+
+        return;
+    }
+
     console.log('init...');
     setOptions({
         ...options,
