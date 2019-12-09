@@ -144,7 +144,7 @@ function PageLink({ filters, link }) {
         <li>
             <LinkInfo
                 link={link}
-                showRedirects={filters.redirects}
+                showRedirects={filters.redirects.value}
             />
         </li>
     );
