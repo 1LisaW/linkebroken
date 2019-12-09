@@ -22,6 +22,7 @@ export default function Form({
                     name="urls"
                     className="form__urls"
                     value={options.urls}
+                    disabled={options.started ? 'disabled': ''}
                     onChange={event => onChange({
                         ...options,
                         urls: event.target.value,
@@ -32,6 +33,7 @@ export default function Form({
                 <select
                     name="depth"
                     value={options.depth}
+                    disabled={options.started ? 'disabled': ''}
                     onChange={event => onChange({
                         ...options,
                         depth: event.target.value,
