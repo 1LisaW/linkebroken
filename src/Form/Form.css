@@ -2,9 +2,24 @@
     position: relative;
     padding: 10px;
     margin: 0;
-    background: #a8e1ee url('./images/freken.png') no-repeat;
-    background-position: 100.5% 100%;
-    background-size: 87px 100px;
+    background: #a8e1ee;
+
+    &:after {
+        position: absolute;
+        z-index: 0;
+        display: block;
+        content: ' ';
+        width: 87px;
+        height: 100px;
+        right: 0;
+        bottom: -2px;
+        background: url('./images/freken.png') no-repeat;
+        background-size: 87px 100px;
+    }
+
+    &_process:after{
+         animation: 0.35s tremor ease-out infinite;
+     }
 
     &__urls {
         width: 60%;
@@ -14,13 +29,14 @@
     &__button {
         cursor: pointer;
         position: absolute;
+        z-index: 10;
         font-size: 16px;
-        padding: 12px 50px;
+        padding: 8px 50px;
         min-width: 170px;
-        right: 5%;
+        right: 4%;
         bottom: 8px;
         background: #000;
-        color: #FFF;
+        color: #EFEFEF;
         border: 0;
         box-shadow: none;
 
@@ -32,28 +48,14 @@
     }
 }
 
-@-webkit-keyframes barberpole {
-    from {
-        background-position: 0 0;
+@keyframes tremor {
+    0%, 25% {
+        right: -1px;
+        transform: translateX(-2%);
     }
-    to {
-        background-position: 60px 30px;
-    }
-}
-@-moz-keyframes barberpole {
-    from {
-        background-position: 0 0;
-    }
-    to {
-        background-position: 60px 30px;
-    }
-}
-@-o-keyframes barberpole {
-    from {
-        background-position: 0 0;
-    }
-    to {
-        background-position: 60px 30px;
+    50%, 100% {
+        right: 1px;
+        transform: translateX(3%);
     }
 }
 @keyframes barberpole {

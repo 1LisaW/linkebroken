@@ -16,7 +16,7 @@ export default function Form({
     onStart,
 }) {
     return (
-        <form className="form">
+        <form className={`form ${options.started ? 'form_process': ''}`}>
             <div>
                 <textarea
                     name="urls"

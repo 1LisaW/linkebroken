@@ -161,6 +161,9 @@ export default function App() {
 function getVisibleUrl(url, hostnames = []) {
     // сохраняем видимое имя без хоста
     let visibleUrl = url;
+    if (!visibleUrl) {
+        console.warn('strange empty url!');
+    }
     try {
         hostnames.forEach(hostname => {
             // но только если https
