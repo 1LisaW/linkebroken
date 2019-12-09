@@ -46,7 +46,12 @@ export default function App() {
         });
 
         (async function process() {
-            const pageResult = await crawl(url);
+            let pageResult;
+            try {
+                pageResult = await crawl(url);
+            } catch (errorData) {
+                pageResult = errorData;
+            }
 
             if ((level + 1) < options.depth) {
                 // текущая страница чеканная

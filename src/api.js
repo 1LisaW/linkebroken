@@ -5,8 +5,17 @@ export async function crawl(url) {
             .then(res => res.json())
             .then(data => resolve(data))
             .catch(err => {
-                throw Error(err);
-                // reject(err);
+                console.error(err);
+                reject({
+                    links: [
+                        {
+                            url,
+                            status: '???',
+                            state: 'BROKEN'
+                        }
+                    ],
+                    passed: false,
+                });
             });
     });
 }
