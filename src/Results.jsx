@@ -93,11 +93,12 @@ function Page({
             <h3>
                 <a
                     href={pageUrl}
+                    title={pageUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`results__page results__page_${getPageModifier(page.passed)}`}
                 >
-                    {pageUrl}
+                    {decodeURIComponent(pageUrl)}
                 </a>
             </h3>
             <ul>
@@ -137,11 +138,12 @@ function Link({ url, state, filters }) {
         <li>
             <a
                 href={url}
+                title={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`results__link results__link_${getLinkModifier(state)}`}
             >
-                {url}
+                {decodeURIComponent(url)}
             </a>
         </li>
     );
