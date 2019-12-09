@@ -75,15 +75,17 @@ function Header({
     queue = [],
     urls = {},
 }) {
-    const errors = Object.keys(urls).map(pageUrl => {
+    const urlsKeys = Object.keys(urls);
+    const errors = urlsKeys.map(pageUrl => {
         return urls[pageUrl].links.filter(({ state }) => state === STATUS_BROKEN).length;
     }).reduce((sum, cur) => sum + parseInt(cur, 10), 0);
 
     return (
         <h2>
-            В очереди {queue.length} {pluralize(queue.length, ['ссылка', 'ссылки', 'ссылок'])}
+            В очереди {queue.length} {pluralize(queue.length, ['ссылка', 'ссылки', 'ссылок'])},
+            проверено {urlsKeys.length} {pluralize(urlsKeys.length, ['ссылка', 'ссылки', 'ссылок'])}
             {errors ?
-                ` (${errors} ${pluralize(errors, ['проблема найдена', 'проблемы найдено', 'проблем найдено'])})` :
+                `, ${errors} ${pluralize(errors, ['проблема найдена', 'проблемы найдено', 'проблем найдено'])}` :
                 ''
             }
         </h2>

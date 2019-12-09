@@ -13,6 +13,7 @@ const linksToSkip = [
     'tracking.retailrocket.net',
     'rrstatic.retailrocket.net',
     // cert issues
+    // TODO 'asv.org.ru',
     'sberbank-talents.ru',
     'sberbankins.ru',
     'www.gibdd.ru',
@@ -20,6 +21,7 @@ const linksToSkip = [
     // lk
     /(online\.sberbank\.ru)/,
     'lk2.service.nalog.ru',
+    'online.rostatus.ru',
     // metrics & services
     // TODO zen.yandex?
     /(yandex\.ru|google\.com|google-analytics\.com|googletagmanager\.com)/i,
