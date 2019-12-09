@@ -99,13 +99,35 @@ export default function App() {
                 console.error(results.urls);
             }
 
+            // краулер может несколько раз прислать урл,
+            // схлопываем, оставляем худший статус?
+            const checkedLinks = [];
+            pageResult.links.forEach(link => {
+                const findLink = checkedLinks.find(curLink => curLink.url === link.url);
+                if (findLink) {
+                    if (link.status === STATUS_OK) {
+                        findLink.originalUri = link.originalUri;
+                        findLink.state = link.state;
+                        findLink.status = link.status;
+                    }
+                    return;
+                }
+                checkedLinks.push(link);
+            });
+
             // неуспешные - в начало
             // успешные - в конец
             const newUrls = pageResult.passed ? {
                 ...results.urls,
-                [url]: pageResult,
+                [url]: {
+                    ...pageResult,
+                    links: checkedLinks,
+                },
             } : {
-                [url]: pageResult,
+                [url]: {
+                    ...pageResult,
+                    links: checkedLinks,
+                },
                 ...results.urls,
             };
 
@@ -173,7 +195,7 @@ function handleStart(options, setOptions, results, setResults) {
             // do nothing
         }
     });
-    console.log(`crawl with hostnames ${hostnames.join(', ')}..`);
+    console.log(`crawl with hostnames ${hostnames.join(', ')}...`);
 
     setResults({
         ...results,
