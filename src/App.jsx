@@ -63,19 +63,15 @@ export default function App() {
                 }
                 results.checked[url]++;
 
-                // добавляем в очередь вс, что страницы
-                (pageResult.links || [])
+                // отбираем несломанное, не в чеках
+                const newNotBrokenLinks = (pageResult.links || [])
                     .filter(link => link.state === STATUS_OK)
-                    .map(link => link.url)
-                    .filter(linkUrl => !results.checked[linkUrl])
-                    // на базовом домене
-                    .filter(linkUrl => results.hostnames.find(hostname => linkUrl.match(hostname)))
-                    .filter(linkUrl => !linkUrl.match(/\.(js|css|woff|ttf|otf|png|jpg|svg|jpeg|gif|webp|bmp|ico|webmanifest)/i))
-                    .filter(linkUrl => !linkUrl.match(/\/portalserver\/(atom|content)/i))
-                    // так же скипаем, как на сервере
-                    .filter(linkUrl => !config.linksToSkip.find(linkToSkip => {
-                        return linkUrl.match(linkToSkip);
-                    }))
+                    .filter(({ url: linkUrl }) => !results.checked[linkUrl]);
+                // отбираем страницы
+                const toCheck = config.filterPages(newNotBrokenLinks, results.hostnames);
+
+                // добавляем в очередь вс, что страницы
+                toCheck.map(link => link.url)
                     .forEach(linkUrl => {
                         results.queue.push({
                             url: linkUrl,
@@ -83,13 +79,19 @@ export default function App() {
                         });
                     });
 
-                // помечаем как чеканные все остальные
-                pageResult.links.forEach(linkUrl => {
+                // помечаем как чеканные все, что считаем страницами
+                toCheck.forEach(({ url: linkUrl, originalUri }) => {
                     const checked = results.checked;
                     if (!checked[linkUrl]) {
                         checked[linkUrl] = 0;
                     }
                     checked[linkUrl]++;
+                    if (originalUri) {
+                        if (!checked[originalUri]) {
+                            checked[originalUri] = 0;
+                        }
+                        checked[originalUri]++;
+                    }
                 });
             } else {
                 console.log(`maximum depth is ${level}`);
