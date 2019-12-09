@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 
 import LinkInfo from './LinkInfo/LinkInfo';
 import Filters from './Filters/Filters';
+import Header from './Header/Header';
 
 import { STATUS_SKIPPED, STATUS_BROKEN, STATUS_OK } from '../constants';
-import pluralize from './pluralize';
-import { TYPE_ALL, TYPE_BROKEN, getCsv, getCsvName } from './report';
 
 import './Results.css';
 
@@ -60,7 +59,7 @@ export default function Results({
                     'Ничего не делаю...'
                 }
             </div>
-            <ul className="results__page-list">
+            <ul>
                 {Object.keys(urls).map(pageUrl => (
                     <Page
                         key={pageUrl}
@@ -71,65 +70,6 @@ export default function Results({
                 ))}
             </ul>
         </div>
-    );
-}
-
-function Header({
-    queue = [],
-    urls = {},
-    startDate,
-}) {
-    const urlsKeys = Object.keys(urls);
-    const errors = urlsKeys.map(pageUrl => {
-        return urls[pageUrl].links.filter(({ state }) => state === STATUS_BROKEN).length;
-    }).reduce((sum, cur) => sum + parseInt(cur, 10), 0);
-
-    const [reportGenerated, setReportGenerated] = useState(0);
-
-    if (!startDate) {
-        if (!Object.keys(urls).length) {
-            return (
-                <h2>Ничего нет</h2>
-            );
-        }
-        const reportName = getCsvName(reportGenerated);
-
-        return (
-            <h2>
-                Сгенерировать
-                {' '}
-                <a href="#" onClick={() => setReportGenerated(TYPE_ALL)}>отчет со всеми ссылками</a>
-                {' '}
-                или
-                {' '}
-                <a href="#" onClick={() => setReportGenerated(TYPE_BROKEN)}>только с битыми ссылками</a>
-                {!!reportGenerated && (
-                    <>
-                        <br />
-                        <br />
-                        <a key={reportName} href={getCsv(urls, reportGenerated)} download={reportName}>
-                            Скачать {reportName}
-                        </a>
-                    </>
-                )}
-            </h2>
-        );
-    }
-    if (reportGenerated) {
-        setReportGenerated(0);
-    }
-
-    return (
-            <h2>
-                Начато: {startDate.toLocaleDateString('ru')} {startDate.toLocaleTimeString('ru')}.
-                {' '}
-                В очереди {queue.length} {pluralize(queue.length, ['ссылка', 'ссылки', 'ссылок'])},
-                проверено {urlsKeys.length} {pluralize(urlsKeys.length, ['ссылка', 'ссылки', 'ссылок'])}
-                {errors ?
-                    `, ${errors} ${pluralize(errors, ['проблема найдена', 'проблемы найдено', 'проблем найдено'])}` :
-                    ''
-                }
-            </h2>
     );
 }
 
@@ -152,7 +92,7 @@ function Page({
     };
 
     return (
-        <li className="results__page-block">
+        <li>
             <h3>
                 <LinkInfo
                     link={pageLink}
