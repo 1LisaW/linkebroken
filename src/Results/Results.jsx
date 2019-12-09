@@ -76,7 +76,7 @@ function Header({
 
     return (
         <h2>
-            В очереди {queue.length} {pluralize(errors, ['ссылка', 'ссылки', 'ссылок'])}
+            В очереди {queue.length} {pluralize(queue.length, ['ссылка', 'ссылки', 'ссылок'])}
             {errors ?
                 ` (${errors} ${pluralize(errors, ['проблема найдена', 'проблемы найдено', 'проблем найдено'])})` :
                 ''
