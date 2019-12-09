@@ -1,4 +1,8 @@
 .filters {
+    input {
+        vertical-align: -3px;
+    }
+
     &__filter {
         cursor: pointer;
         margin-right: 10px;

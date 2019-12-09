@@ -13,8 +13,14 @@ export default function Results({
         urls: {},
         queue: [],
         currentUrl: '',
-    }
+    },
 }) {
+    const {
+        urls,
+        queue,
+        currentUrl,
+    } = results;
+
     const [filters, setFilters] = useState({
         broken: {
             value: true,
@@ -38,21 +44,21 @@ export default function Results({
         <div className="results">
             <Filters filters={filters} onChange={setFilters} />
             <Header
-                queue={results.queue}
-                urls={results.urls}
+                queue={queue}
+                urls={urls}
             />
-            {results.currentUrl && (
+            {currentUrl && (
                 <div>
-                    Обрабатывается {results.currentUrl}...
+                    Обрабатывается {currentUrl}...
                 </div>
             )}
             <ul>
-                {Object.keys(results.urls).map(pageUrl => (
+                {Object.keys(urls).map(pageUrl => (
                     <Page
                         key={pageUrl}
                         filters={filters}
                         pageUrl={pageUrl}
-                        page={results.urls[pageUrl]}
+                        page={urls[pageUrl]}
                     />
                 ))}
             </ul>

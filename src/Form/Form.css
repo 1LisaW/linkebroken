@@ -3,7 +3,7 @@
     padding: 10px;
     margin: 0;
     background: #a8e1ee url('./images/freken.png') no-repeat;
-    background-position: right bottom;
+    background-position: 100.5% 100%;
     background-size: 87px 100px;
 
     &__urls {

@@ -19,7 +19,7 @@ function getLinkModifier(state) {
     }
 }
 
-function SanitizedLink({ url, state }) {
+function Link({ visibleUrl, url, state }) {
     return (
         <a
             href={url}
@@ -28,23 +28,31 @@ function SanitizedLink({ url, state }) {
             rel="noopener noreferrer"
             className={`link link_${getLinkModifier(state)}`}
         >
-            {decodeURIComponent(url)}
+            {visibleUrl}
         </a>
     );
 }
 
 export default function LinkInfo({ link, showRedirects }) {
-    const { url, state, status, originalUri } = link;
+    const { url, visibleOriginalUri, visibleUrl, state, status, originalUri } = link;
     return (
         <>
             {showRedirects && originalUri && (
                 <>
-                    <SanitizedLink url={originalUri} state={STATUS_REDIRECT} />
+                    <Link
+                        url={originalUri}
+                        visibleUrl={visibleOriginalUri}
+                        state={STATUS_REDIRECT}
+                    />
                     {' ➜ '}
                 </>
             )}
             {state === STATUS_BROKEN ? `${status} ` : ''}
-            <SanitizedLink url={url} state={state} />
+            <Link
+                url={url}
+                visibleUrl={visibleUrl}
+                state={state}
+            />
         </>
     );
 }

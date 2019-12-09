@@ -7,7 +7,7 @@ export default function Filters({
     onChange,
 }) {
     return (
-        <form>
+        <form className="filters">
             {Object.keys(filters).map(filterKey => {
                 const { name, value } = filters[filterKey];
                 return (

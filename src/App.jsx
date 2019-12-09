@@ -113,7 +113,12 @@ export default function App() {
                     }
                     return;
                 }
-                checkedLinks.push(link);
+
+                checkedLinks.push({
+                    ...link,
+                    visibleUrl: getVisibleUrl(link.url, results.hostnames),
+                    visibleOriginalUri: getVisibleUrl(link.originalUri, results.hostnames),
+                });
             });
 
             // неуспешные - в начало
@@ -151,6 +156,23 @@ export default function App() {
             />
         </div>
     );
+}
+
+function getVisibleUrl(url, hostnames = []) {
+    // сохраняем видимое имя без хоста
+    let visibleUrl = url;
+    try {
+        hostnames.forEach(hostname => {
+            // но только если https
+            const regExp = new RegExp(`^https://${hostname.replace(/\./, '\\.')}`);
+            visibleUrl = visibleUrl.replace(regExp, '');
+        });
+    } catch (err) {
+        console.warn(err);
+        // do nothing
+    }
+    // раскодируем, если кириллица или символы
+    return decodeURIComponent(visibleUrl);
 }
 
 function handleStart(options, setOptions, results, setResults) {
