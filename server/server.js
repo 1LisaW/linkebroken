@@ -1,7 +1,8 @@
 const path = require('path');
 const conf = require('dotenv').config();
 
-const linkinator = require('linkinator');
+//const linkinator = require('linkinator');
+const linkinator = require('linkinator-css-edition');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -55,7 +56,7 @@ server.get('/api/broken', async function (req, res) {
         recurse: false,
         silent: true,
         concurrency: 30,
-        linksToSkip: config.linksToSkip,
+        ...config,
     });
 
     // Check to see if the scan passed!

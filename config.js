@@ -1,4 +1,13 @@
 module.exports = {
+    linksAttributes: {
+        'data-src': [
+            'img'
+        ],
+        'data-bg': [
+            'div'
+        ],
+    },
+    // TODO можно использовать функцию
     // TODO не в демо - только наши домены?
     linksToSkip: [
         /^tel:/,
