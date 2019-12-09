@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import LinkInfo from './LinkInfo';
+import Filters from './Filters';
+
 import { STATUS_SKIPPED, STATUS_BROKEN, STATUS_OK } from './constants';
 import { pluralize } from './utils';
 
@@ -13,27 +16,27 @@ export default function Results({
     }
 }) {
     const [filters, setFilters] = useState({
-        skipped: false,
-        ok: false,
+        broken: {
+            value: true,
+            name: 'сломанные ссылки',
+        },
+        redirects: {
+            value: false,
+            name: 'редиректы',
+        },
+        ok: {
+            value: false,
+            name: 'успешные ссылки',
+        },
+        skipped: {
+            value: false,
+            name: 'игнорируемые ссылки',
+        },
     });
+
     return (
         <div className="results">
-            <form>
-                    <label className="results__filter">
-                    <input name="skipped" type="checkbox" value="1" checked={filters.skipped} onChange={() => setFilters({
-                        ...filters,
-                        skipped: !filters.skipped,
-                    })}/>
-                    пропущенные ссылки
-                </label>
-                <label className="results__filter">
-                    <input name="ok" type="checkbox" value="1" checked={filters.ok} onChange={() => setFilters({
-                        ...filters,
-                        ok: !filters.ok,
-                    })}/>
-                    успешные ссылки
-                </label>
-            </form>
+            <Filters filters={filters} onChange={setFilters} />
             <Header
                 queue={results.queue}
                 urls={results.urls}
@@ -76,10 +79,6 @@ function Header({
     );
 }
 
-function getSanitizedUrl(url) {
-    return decodeURIComponent(url);
-}
-
 function Page({
     filters,
     pageUrl,
@@ -88,27 +87,25 @@ function Page({
         links: [],
     }
 }) {
-    const currentLink = page.links.find(link => !link.parent) || {};
+    const pageLink = page.links.find(link => !link.parent) || {
+        url: pageUrl,
+        state: page.passed ? STATUS_OK : STATUS_BROKEN,
+    };
 
     return (
         <li>
             <h3>
-                <a
-                    href={pageUrl}
-                    title={pageUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`results__page results__page_${getLinkModifier(currentLink.state)}`}
-                >
-                    {getSanitizedUrl(pageUrl)}
-                </a>
+                <LinkInfo
+                    link={pageLink}
+                    showRedirects={true}
+                    filters={filters}
+                />
             </h3>
             <ul>
-                {page.links.map(({ url, state }) => (
-                    <Link
-                        key={url}
-                        url={url}
-                        state={state}
+                {page.links.map(link => (
+                    <PageLink
+                        key={link.url}
+                        link={link}
                         filters={filters}
                     />
                 ))}
@@ -117,36 +114,32 @@ function Page({
     );
 }
 
-function getLinkModifier(state) {
-    switch (state) {
-        case STATUS_BROKEN:
-            return 'broken';
-        case STATUS_SKIPPED:
-            return 'skipped';
-        default:
-        case STATUS_OK:
-            return 'ok';
+function showLink(link, filters) {
+    const { originalUri, state } = link;
+    // редиректы - более полный фильтр
+    if (filters.redirects.value && originalUri) {
+        return true;
     }
+
+    // остаточные фильтры
+    return !(
+        !filters.broken.value && state === STATUS_BROKEN ||
+        !filters.ok.value && state === STATUS_OK ||
+        !filters.skipped.value && state === STATUS_SKIPPED
+    );
 }
 
-function Link({ url, state, filters }) {
-    if (
-        !filters.ok && state === STATUS_OK ||
-        !filters.skipped && state === STATUS_SKIPPED
-    ) {
+function PageLink({ filters, link }) {
+    if (!showLink(link, filters)) {
         return <></>;
     }
+
     return (
         <li>
-            <a
-                href={url}
-                title={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`results__link results__link_${getLinkModifier(state)}`}
-            >
-                {getSanitizedUrl(url)}
-            </a>
+            <LinkInfo
+                link={link}
+                showRedirects={filters.redirects}
+            />
         </li>
     );
 }
