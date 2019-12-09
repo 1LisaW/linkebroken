@@ -162,7 +162,7 @@ function getVisibleUrl(url, hostnames = []) {
     // сохраняем видимое имя без хоста
     let visibleUrl = url;
     if (!visibleUrl) {
-        console.warn('strange empty url!');
+        return url;
     }
     try {
         hostnames.forEach(hostname => {
