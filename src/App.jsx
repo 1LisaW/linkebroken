@@ -53,7 +53,7 @@ export default function App() {
                 pageResult = errorData;
             }
 
-            if ((level + 1) < options.depth) {
+            if (level < options.depth) {
                 // текущая страница чеканная
                 if (!results.checked[url]) {
                     results.checked[url] = 0;
@@ -88,6 +88,8 @@ export default function App() {
                     }
                     checked[linkUrl]++;
                 });
+            } else {
+                console.log(`maximum depth is ${level}`);
             }
 
             if (results.urls[url]) {
