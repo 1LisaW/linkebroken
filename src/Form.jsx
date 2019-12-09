@@ -1,8 +1,10 @@
 import React from 'react';
 
+import './Form.css';
+
 const DEPTH = {
-    'Весь сайт': 20, // максимлаьная глубина?
-    'Одну страницу': 0,
+    'Весь сайт в глубину': 20, // максимлаьная глубина?
+    'Указанные страницы': 0,
 };
 
 export default function Form({
@@ -11,32 +13,19 @@ export default function Form({
     onStart,
 }) {
     return (
-        <form>
-            <label>
-                Базовый домен
-                <input
-                    name="domain"
-                    value={options.hostname}
-                    onChange={event => onChange({
-                        ...options,
-                        hostname: event.target.value,
-                    })}
-                />
-            </label>
-            <label>
-                Ссылки
+        <form className="form">
+            <div>
                 <textarea
                     name="urls"
-                    style={{ width: '100%', height: '60px' }}
+                    className="form__urls"
                     value={options.urls}
                     onChange={event => onChange({
                         ...options,
                         urls: event.target.value,
                     })}
                 />
-            </label>
-            <label>
-                Глубина
+            </div>
+            <div>
                 <select
                     name="depth"
                     value={options.depth}
@@ -54,8 +43,9 @@ export default function Form({
                         </option>
                     ))}
                 </select>
-            </label>
+            </div>
             <button
+                className={`form__button form__button_${options.started ? 'disabled': ''}`}
                 type="button"
                 disabled={options.started ? 'disabled': ''}
                 onClick={onStart}

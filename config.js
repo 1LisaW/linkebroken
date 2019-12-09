@@ -1,6 +1,8 @@
 module.exports = {
     // TODO не в демо - только наши домены?
     linksToSkip: [
+        /^tel:/,
+        /^mailto:/,
         // skip the news and some garbage
         /newsID=/,
         /portalserver\/sb-portal-ru/,
@@ -19,7 +21,8 @@ module.exports = {
         // lk
         /(online\.sberbank\.ru)/,
         'lk2.service.nalog.ru',
-        // metrics
+        // metrics & services
+        // TODO zen.yandex?
         /(yandex\.ru|google\.com|google-analytics\.com|googletagmanager\.com)/i,
     ]
 };

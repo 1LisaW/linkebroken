@@ -109,7 +109,7 @@ export default function App() {
     });
 
     return (
-        <div>
+        <div className="app">
             <h1>ЛинкеБрокен</h1>
             <Form options={options} onChange={setOptions} onStart={() => {
                 handleStart(options, setOptions, results, setResults);

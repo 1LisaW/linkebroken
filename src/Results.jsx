@@ -19,14 +19,14 @@ export default function Results({
     return (
         <div className="results">
             <form>
-                <label>
+                    <label className="results__filter">
                     <input name="skipped" type="checkbox" value="1" checked={filters.skipped} onChange={() => setFilters({
                         ...filters,
                         skipped: !filters.skipped,
                     })}/>
                     пропущенные ссылки
                 </label>
-                <label>
+                <label className="results__filter">
                     <input name="ok" type="checkbox" value="1" checked={filters.ok} onChange={() => setFilters({
                         ...filters,
                         ok: !filters.ok,
