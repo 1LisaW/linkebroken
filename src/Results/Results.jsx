@@ -59,7 +59,7 @@ export default function Results({
                     'Ничего не делаю...'
                 }
             </div>
-            <ul>
+            <ul className="results__page-list">
                 {Object.keys(urls).map(pageUrl => (
                     <Page
                         key={pageUrl}
@@ -122,7 +122,7 @@ function Page({
     };
 
     return (
-        <li>
+        <li className="results__page-block">
             <h3>
                 <LinkInfo
                     link={pageLink}
