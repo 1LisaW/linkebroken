@@ -11,7 +11,6 @@ import './App.css';
 
 export default function App() {
     const [options, setOptions] = useState({
-        hostname: `https://www.sberbank.ru`,
         urls: `https://www.sberbank.ru/ru/person`,
         depth: 0,
         started: false,
@@ -19,6 +18,7 @@ export default function App() {
     const [results, setResults] = useState({
         urls: {},
         queue: [],
+        hostnames: [],
         checked: {},
         currentUrl: '',
     });
@@ -68,7 +68,7 @@ export default function App() {
                     .map(link => link.url)
                     .filter(linkUrl => !results.checked[linkUrl])
                     // на базовом домене
-                    .filter(linkUrl => linkUrl.match(options.hostname))
+                    .filter(linkUrl => results.hostnames.find(hostname => linkUrl.match(hostname)))
                     .filter(linkUrl => !linkUrl.match(/\.(js|css|woff|ttf|otf|png|jpg|svg|jpeg|gif|webp|bmp|ico|webmanifest)/i))
                     .filter(linkUrl => !linkUrl.match(/\/portalserver\/(atom|content)/i))
                     // так же скипаем, как на сервере
@@ -162,9 +162,23 @@ function handleStart(options, setOptions, results, setResults) {
             level: 0,
         }));
 
+    const hostnames = [];
+    queue.forEach(({ url }) => {
+        try {
+            const baseUrl = new URL(url);
+            if (!hostnames.includes(baseUrl.hostname)) {
+                hostnames.push(baseUrl.hostname);
+            }
+        } catch (e) {
+            // do nothing
+        }
+    });
+    console.log(`crawl with hostnames ${hostnames.join(', ')}..`);
+
     setResults({
         ...results,
         checked: {},
+        hostnames,
         urls: {},
         queue,
         currentUrl: '',
