@@ -47,11 +47,12 @@ export default function Results({
                 queue={queue}
                 urls={urls}
             />
-            {currentUrl && (
-                <div>
-                    Обрабатывается {currentUrl}...
-                </div>
-            )}
+            <div>
+                {currentUrl ?
+                    `Обрабатывается ${currentUrl}...` :
+                    'Ничего не делаю...'
+                }
+            </div>
             <ul>
                 {Object.keys(urls).map(pageUrl => (
                     <Page
