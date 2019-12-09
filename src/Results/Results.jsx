@@ -26,6 +26,10 @@ export default function Results({
             value: true,
             name: 'сломанные ссылки',
         },
+        passed: {
+            value: false,
+            name: 'страницы без сломанных ссылок',
+        },
         redirects: {
             value: false,
             name: 'редиректы',
@@ -94,6 +98,11 @@ function Page({
         links: [],
     }
 }) {
+    const showPage = filters.passed.value || page.links.filter(({ state }) => state === STATUS_BROKEN).length;
+    if (!showPage) {
+        return <></>;
+    }
+
     const pageLink = page.links.find(link => !link.parent) || {
         url: pageUrl,
         state: page.passed ? STATUS_OK : STATUS_BROKEN,
