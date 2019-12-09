@@ -76,8 +76,8 @@ function Header({
     );
 }
 
-function getPageModifier(passed) {
-    return passed ? 'passed' : 'non-passed';
+function getSanitizedUrl(url) {
+    return decodeURIComponent(url);
 }
 
 function Page({
@@ -88,6 +88,8 @@ function Page({
         links: [],
     }
 }) {
+    const currentLink = page.links.find(link => !link.parent) || {};
+
     return (
         <li>
             <h3>
@@ -96,9 +98,9 @@ function Page({
                     title={pageUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`results__page results__page_${getPageModifier(page.passed)}`}
+                    className={`results__page results__page_${getLinkModifier(currentLink.state)}`}
                 >
-                    {decodeURIComponent(pageUrl)}
+                    {getSanitizedUrl(pageUrl)}
                 </a>
             </h3>
             <ul>
@@ -143,7 +145,7 @@ function Link({ url, state, filters }) {
                 rel="noopener noreferrer"
                 className={`results__link results__link_${getLinkModifier(state)}`}
             >
-                {decodeURIComponent(url)}
+                {getSanitizedUrl(url)}
             </a>
         </li>
     );

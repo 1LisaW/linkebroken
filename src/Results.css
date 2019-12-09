@@ -28,13 +28,16 @@
         color: #000;
         padding: 1px 2px;
 
-        &_passed {
-            background: #b4deae;
+        &_ok {
+            background: #9cde97;
         }
 
-        &_non-passed {
-            /*сама страница не сломана*/
-            background: #DDD;
+        &_broken {
+            background: #ffc5b0;
+        }
+
+        &_skipped {
+            background: #ffdca6;
         }
     }
 
