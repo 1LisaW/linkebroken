@@ -27,6 +27,7 @@ module.exports = {
         'sberbank-talents.ru',
         'sberbankins.ru',
         'www.gibdd.ru',
+        'www.nalog.ru',
         // lk
         /(online\.sberbank\.ru)/,
         'lk2.service.nalog.ru',
