@@ -19,6 +19,7 @@ export default function Results({
         urls,
         queue,
         currentUrl,
+        startDate,
     } = results;
 
     const [filters, setFilters] = useState({
@@ -48,6 +49,7 @@ export default function Results({
         <div className="results">
             <Filters filters={filters} onChange={setFilters} />
             <Header
+                startDate={startDate}
                 queue={queue}
                 urls={urls}
             />
@@ -74,14 +76,23 @@ export default function Results({
 function Header({
     queue = [],
     urls = {},
+    startDate,
 }) {
     const urlsKeys = Object.keys(urls);
     const errors = urlsKeys.map(pageUrl => {
         return urls[pageUrl].links.filter(({ state }) => state === STATUS_BROKEN).length;
     }).reduce((sum, cur) => sum + parseInt(cur, 10), 0);
 
+    if (!startDate) {
+        return (
+            <h2>Жду приказа</h2>
+        );
+    }
+
     return (
         <h2>
+            Начато: {startDate.toLocaleDateString('ru')} {startDate.toLocaleTimeString('ru')}.
+            {' '}
             В очереди {queue.length} {pluralize(queue.length, ['ссылка', 'ссылки', 'ссылок'])},
             проверено {urlsKeys.length} {pluralize(urlsKeys.length, ['ссылка', 'ссылки', 'ссылок'])}
             {errors ?

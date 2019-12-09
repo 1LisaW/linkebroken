@@ -22,6 +22,7 @@ export default function App() {
         hostnames: [],
         checked: {},
         currentUrl: '',
+        startDate: null,
     });
 
     useEffect(() => {
@@ -192,6 +193,7 @@ function handleStart(options, setOptions, results, setResults) {
         setResults({
             ...results,
             queue: [],
+            startDate: null,
             currentUrl: '',
         });
 
@@ -230,6 +232,7 @@ function handleStart(options, setOptions, results, setResults) {
         checked: {},
         hostnames,
         urls: {},
+        startDate: new Date(),
         queue,
         currentUrl: '',
     });
