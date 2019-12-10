@@ -9,7 +9,7 @@ metadata:
     release: {{ .Values.release }}
 spec:
   revisionHistoryLimit: 1
-  replicas: 1
+  replicas: 2
   selector:
     app: tools-linkebroken
     release: {{ .Values.release }}
@@ -30,9 +30,9 @@ spec:
           containerPort: 8080
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 200m
+            memory: 200Mi
           limits:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 200m
+            memory: 200Mi
   triggers: []
