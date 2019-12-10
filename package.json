@@ -15,6 +15,9 @@
     "preversion": "git rev-parse --abbrev-ref HEAD",
     "postversion": "git push origin HEAD && git push origin HEAD --follow-tags"
   },
+  "nodemonConfig": {
+    "delay": "1000"
+  },
   "contributors": [
     {
       "name": "Бондарь Сергей Евгеньевич",
