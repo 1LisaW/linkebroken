@@ -26,10 +26,10 @@ server.use(express.static(path.resolve('./dist')));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 
-server.use(timeout(MAX_TIMEOUT));
-server.use(function (req, res, next){
-    if (!req.timedout) next();
-});
+// server.use(timeout(MAX_TIMEOUT));
+// server.use(function (req, res, next){
+//     if (!req.timedout) next();
+// });
 
 server.get('/', (req, res) => {
     res.send('linkebroken server');
