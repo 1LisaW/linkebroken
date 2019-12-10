@@ -57,7 +57,7 @@ server.get('/api/broken', async function (req, res) {
         path: req.query.url,
         recurse: false,
         silent: true,
-        concurrency: 30,
+        concurrency: IS_DEV ? 30 : 1,
         ...config,
     });
 
