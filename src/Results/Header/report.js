@@ -13,7 +13,7 @@ export function getCsv(urls, type) {
     Object.keys(urls).forEach(pageUrl => {
         const links = urls[pageUrl].links;
         links.forEach(link => {
-            if (type === TYPE_BROKEN && link.state === STATUS_BROKEN) {
+            if (type === TYPE_BROKEN && link.state !== STATUS_BROKEN) {
                 return;
             }
             csv += '\n' + head.map(field => link[field]).join(',');
