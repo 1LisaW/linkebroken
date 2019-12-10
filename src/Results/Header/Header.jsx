@@ -4,6 +4,8 @@ import {STATUS_BROKEN} from "../../constants";
 import {getCsv, getCsvName, TYPE_ALL, TYPE_BROKEN} from "./report";
 import pluralize from "./pluralize";
 
+import './Header.css';
+
 export default function Header({
     queue = [],
     urls = {},
