@@ -25,6 +25,7 @@ const linksToSkipList = [
     /(online\.sberbank\.ru)/,
     'lk2.service.nalog.ru',
     'online.rostatus.ru',
+    'securepayments.sberbank.ru',
     // metrics & services
     // TODO zen.yandex?
     /(yandex\.ru|google\.com|google-analytics\.com|googletagmanager\.com)/i,
