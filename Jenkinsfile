@@ -1,5 +1,5 @@
 def projectName = scm.getUserRemoteConfigs()[0].getUrl().tokenize('/').last().split("\\.")[0]
-def label = "rdbuild-${UUID.randomUUID().toString()}"
+def label = "${projectName}-${UUID.randomUUID().toString()}"
 
 podTemplate(cloud: 'openshift', label: label, serviceAccount: 'jenkins-jnlp', containers: [
   containerTemplate(name: 'docker', image: 'docker-registry.default.svc:5000/site/docker-hadolint:latest_develop',
@@ -48,7 +48,7 @@ podTemplate(cloud: 'openshift', label: label, serviceAccount: 'jenkins-jnlp', co
       def releaseName = env.BRANCH_NAME == "master" ? "prod" : "test"
       container('deploy') {
         sh """
-          oc project ${projectName}
+          oc project ${projectName} || oc new-project ${projectName}
           helm template Charts/${projectName} \
               --set image.version=${imageTagVersion} \
               -f Charts/${projectName}/env/${releaseName}.yaml \
