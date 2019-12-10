@@ -13,7 +13,8 @@ if (conf.error) {
     throw result.error;
 }
 
-const DEMO = !!process.env.SERVER_DEMO;
+const IS_DEV = !!process.env.DEV;
+const IS_DISABLE_EXTERNAL = !!process.env.DISABLE_EXTERNAL;
 
 const server = express();
 
@@ -73,7 +74,8 @@ server.get('/api/broken', async function (req, res) {
 });
 
 server.listen(process.env.SERVER_PORT, () => {
-    console.log('\r\n', `${DEMO ? '[DEMO MODE] ' : ''}server listening on port ${process.env.SERVER_PORT}...`, '\r\n')
+    console.log('\r\n', `${IS_DEV ? '[DEV MODE] ' : ''}server listening on port ${process.env.SERVER_PORT}...`, '\r\n')
+    console.log('\r\n', `${IS_DISABLE_EXTERNAL ? 'Отключена проверка внешних ссылок!' : ''}`, '\r\n')
 });
 
 module.exports = server;

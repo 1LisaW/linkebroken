@@ -18,10 +18,11 @@ const DIST = path.resolve(__dirname, './dist');
 
 if (!fs.existsSync(DIST)) { fs.mkdirSync(DIST); }
 
-module.exports = env => {
+module.exports = (env, arg) => {
     const ENV = env || {};
     const DEV_MODE = !!ENV.development;
     const PROD_MODE = !!ENV.production;
+    const DISABLE_EXTERNAL = !!process.env.DISABLE_EXTERNAL;
     const MODE = DEV_MODE ? 'development' : 'production';
     const DEV_SERVER = !!ENV.server;
 
@@ -182,11 +183,13 @@ module.exports = env => {
         },
 
         plugins: [
-
             new webpack.DefinePlugin({
                 '__WEBPACK__': JSON.stringify({
                     server: DEV_SERVER,
                 })
+            }),
+            new webpack.EnvironmentPlugin({
+                DISABLE_EXTERNAL,
             }),
 
             new MiniCssExtractPlugin({

@@ -1,6 +1,9 @@
-const linksToSkip = [
+const INTERNAL_DOMAIN = /www\.sberbank\.ru/;
+
+const linksToSkipList = [
     /^tel:/,
     /^mailto:/,
+    /^data:image/,
     // skip the news and some garbage
     /newsID=/,
     /portalserver\/sb-portal-ru/,
@@ -27,6 +30,16 @@ const linksToSkip = [
     /(yandex\.ru|google\.com|google-analytics\.com|googletagmanager\.com)/i,
 ];
 
+function linkToSkipCheck(link) {
+    // Отключение внешних ссылок
+    if (process.env.DISABLE_EXTERNAL && !link.match(INTERNAL_DOMAIN)) {
+        return true;
+    }
+
+    const isToSkip = linksToSkipList.find(rule => link.match(rule));
+    return !!isToSkip;
+}
+
 module.exports = {
     // только для фронт-механизма
     filterPages: (links, hostnames = []) => {
@@ -40,9 +53,7 @@ module.exports = {
             // не картинки/json из контент-сервисов?
             .filter(({ url }) => !url.match(/\/portalserver\/(atom|content)/i))
             // так же скипаем, как на сервере
-            .filter(({ url }) => !linksToSkip.find(linkToSkip => {
-                return url.match(linkToSkip);
-            }));
+            .filter(({ url }) => !linkToSkipCheck(url));
     },
     // Наши картинки
     linksAttributes: {
@@ -53,5 +64,5 @@ module.exports = {
             'div'
         ],
     },
-    linksToSkip,
+    linksToSkip: link => Promise.resolve(linkToSkipCheck(link)),
 };

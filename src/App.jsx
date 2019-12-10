@@ -163,6 +163,9 @@ export default function App() {
             <Form options={options} onChange={setOptions} onStart={() => {
                 handleStart(options, setOptions, results, setResults);
             }} />
+            {process.env.DISABLE_EXTERNAL && (
+                <em>⚠️В этом режиме на сервере не проверяются внешние ссылки!</em>
+            )}
             <Results
                 results={results}
             />
