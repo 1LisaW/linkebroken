@@ -1,4 +1,4 @@
-const errResponse = {
+const errResponse = url => ({
     links: [
         {
             url,
@@ -7,7 +7,7 @@ const errResponse = {
         }
     ],
     passed: false,
-};
+});
 
 export async function crawl(url) {
     return new Promise((resolve, reject) => {
@@ -17,17 +17,14 @@ export async function crawl(url) {
                 if (res && res.ok) {
                     res.json()
                 } else {
-                    reject({
-                        ...errResponse,
-                    });
+                    console.error(`url is ${res.statusCode}`);
+                    reject(errResponse(url));
                 }
             })
             .then(data => resolve(data))
             .catch(err => {
                 console.error(err);
-                reject({
-                    ...errResponse,
-                });
+                reject(errResponse(url));
             });
     });
 }
