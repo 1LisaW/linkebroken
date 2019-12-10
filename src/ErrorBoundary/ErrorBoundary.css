@@ -1,0 +1,14 @@
+.service-error {
+    width: 500px;
+    margin: 30px auto 0;
+    text-align: center;
+
+    &__image {
+        display: block;
+        background: url('./images/err.jpg');
+        background-size: 200px;
+        width: 200px;
+        height: 200px;
+        margin: 5px auto;
+    }
+}

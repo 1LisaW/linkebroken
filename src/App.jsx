@@ -52,110 +52,119 @@ export default function App() {
         });
 
         (async function process() {
-            let pageResult;
-
-            if (results.urls[url]) {
-                console.warn('уже есть в проверенных!', url);
-                setResults({
-                    ...results,
-                    currentUrl: '',
-                });
-                return;
-            }
-
             try {
-                pageResult = await crawl(url);
-            } catch (errorData) {
-                pageResult = errorData;
-            }
+                let pageResult;
 
-            console.log(`${url} handled with ${pageResult.passed ? 'passed' : 'not passed'}`);
-
-            if (level < options.depth) {
-                // текущая страница чеканная
-                if (!results.checked[url]) {
-                    results.checked[url] = 0;
-                }
-                results.checked[url]++;
-
-                // отбираем несломанное, не в чеках
-                const newNotBrokenLinks = (pageResult.links || [])
-                    .filter(link => link.state === STATUS_OK)
-                    .filter(({ url: linkUrl }) => !results.checked[linkUrl]);
-                // отбираем страницы
-                const toCheck = config.filterPages(newNotBrokenLinks, results.hostnames);
-
-                // добавляем в очередь вс, что страницы
-                toCheck.map(link => link.url)
-                    .forEach(linkUrl => {
-                        results.queue.push({
-                            url: linkUrl,
-                            level: level + 1,
-                        });
+                if (results.urls[url]) {
+                    console.warn('уже есть в проверенных!', url);
+                    setResults({
+                        ...results,
+                        currentUrl: '',
                     });
-
-                // помечаем как чеканные все, что считаем страницами
-                toCheck.forEach(({ url: linkUrl, originalUri }) => {
-                    const checked = results.checked;
-                    if (!checked[linkUrl]) {
-                        checked[linkUrl] = 0;
-                    }
-                    checked[linkUrl]++;
-                    if (originalUri) {
-                        if (!checked[originalUri]) {
-                            checked[originalUri] = 0;
-                        }
-                        checked[originalUri]++;
-                    }
-                });
-            } else {
-                console.log(`maximum depth is ${level}`);
-            }
-
-            // краулер может несколько раз прислать урл,
-            // схлопываем, оставляем худший статус?
-            const checkedLinks = [];
-            pageResult.links.forEach(link => {
-                const findLink = checkedLinks.find(curLink => curLink.url === link.url);
-                if (findLink) {
-                    if (link.status === STATUS_OK) {
-                        findLink.originalUri = link.originalUri;
-                        findLink.state = link.state;
-                        findLink.status = link.status;
-                    }
                     return;
                 }
 
-                checkedLinks.push({
-                    ...link,
-                    visibleUrl: getVisibleUrl(link.url, results.hostnames),
-                    visibleOriginalUri: getVisibleUrl(link.originalUri, results.hostnames),
+                try {
+                    pageResult = await crawl(url);
+                } catch (errorData) {
+                    pageResult = errorData;
+                }
+
+                console.log(`${url} handled with ${pageResult.passed ? 'passed' : 'not passed'}`);
+
+                if (level < options.depth) {
+                    // текущая страница чеканная
+                    if (!results.checked[url]) {
+                        results.checked[url] = 0;
+                    }
+                    results.checked[url]++;
+
+                    // отбираем несломанное, не в чеках
+                    const newNotBrokenLinks = (pageResult.links || [])
+                        .filter(link => link.state === STATUS_OK)
+                        .filter(({url: linkUrl}) => !results.checked[linkUrl]);
+                    // отбираем страницы
+                    const toCheck = config.filterPages(newNotBrokenLinks, results.hostnames);
+
+                    // добавляем в очередь вс, что страницы
+                    toCheck.map(link => link.url)
+                        .forEach(linkUrl => {
+                            results.queue.push({
+                                url: linkUrl,
+                                level: level + 1,
+                            });
+                        });
+
+                    // помечаем как чеканные все, что считаем страницами
+                    toCheck.forEach(({url: linkUrl, originalUri}) => {
+                        const checked = results.checked;
+                        if (!checked[linkUrl]) {
+                            checked[linkUrl] = 0;
+                        }
+                        checked[linkUrl]++;
+                        if (originalUri) {
+                            if (!checked[originalUri]) {
+                                checked[originalUri] = 0;
+                            }
+                            checked[originalUri]++;
+                        }
+                    });
+                } else {
+                    console.log(`maximum depth is ${level}`);
+                }
+
+                // краулер может несколько раз прислать урл,
+                // схлопываем, оставляем худший статус?
+                const checkedLinks = [];
+                pageResult.links.forEach(link => {
+                    const findLink = checkedLinks.find(curLink => curLink.url === link.url);
+                    if (findLink) {
+                        if (link.status === STATUS_OK) {
+                            findLink.originalUri = link.originalUri;
+                            findLink.state = link.state;
+                            findLink.status = link.status;
+                        }
+                        return;
+                    }
+
+                    checkedLinks.push({
+                        ...link,
+                        visibleUrl: getVisibleUrl(link.url, results.hostnames),
+                        visibleOriginalUri: getVisibleUrl(link.originalUri, results.hostnames),
+                    });
                 });
-            });
 
-            // неуспешные - в начало
-            // успешные - в конец
-            const newUrls = pageResult.passed ? {
-                ...results.urls,
-                [url]: {
-                    ...pageResult,
-                    links: checkedLinks,
-                },
-            } : {
-                [url]: {
-                    ...pageResult,
-                    links: checkedLinks,
-                },
-                ...results.urls,
-            };
+                // неуспешные - в начало
+                // успешные - в конец
+                const newUrls = pageResult.passed ? {
+                    ...results.urls,
+                    [url]: {
+                        ...pageResult,
+                        links: checkedLinks,
+                    },
+                } : {
+                    [url]: {
+                        ...pageResult,
+                        links: checkedLinks,
+                    },
+                    ...results.urls,
+                };
 
-            setResults({
-                ...results,
-                currentUrl: '',
-                urls: newUrls,
-            });
+                setResults({
+                    ...results,
+                    currentUrl: '',
+                    urls: newUrls,
+                });
+            } catch (error) {
+                setResults({ error })
+            }
         })();
     });
+
+    if (results.error) {
+        // async to boundary
+        throw new Error(results.error);
+    }
 
     return (
         <div className="app">
