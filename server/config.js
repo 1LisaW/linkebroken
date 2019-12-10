@@ -1,4 +1,4 @@
-const INTERNAL_DOMAIN = /www\.sberbank\.ru/;
+const INTERNAL_DOMAIN = /\.sberbank\.ru/;
 
 const linksToSkipList = [
     /^tel:/,

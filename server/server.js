@@ -82,7 +82,7 @@ server.get('/api/broken', async function (req, res) {
         path: req.query.url,
         recurse: false,
         silent: true,
-        concurrency: IS_DEV ? 100 : 20,
+        concurrency: IS_DEV ? 100 : 10,
         ...config,
     });
 
