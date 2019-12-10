@@ -11,9 +11,22 @@ import { STATUS_OK } from './constants';
 import './App.css';
 
 export default function App() {
+    const search = window.location.search.slice(1)
+        .split('&')
+        .reduce((result, str) => {
+            if (!str) {
+                return result;
+            }
+            const [key, value = ''] = str.split('=');
+
+            return {
+                ...result,
+                [key]: value,
+            };
+        }, {});
     const [options, setOptions] = useState({
-        urls: `https://www.sberbank.ru/ru/person`,
-        depth: 0,
+        urls: search.url || `https://www.sberbank.ru/ru/person`,
+        depth: search.depth ? parseInt(search.depth) : 0,
         started: false,
     });
     const [results, setResults] = useState({

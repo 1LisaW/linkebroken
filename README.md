@@ -10,6 +10,8 @@
 
 С не-master раскатывается на [тестовый стенд](http://linkebroken-test.utm.sigma.sbrf.ru/)
 
+Также можно держать ссылку сразу на нужную ссылку `/?depth=-1&url=https://www.sberbank-ru.ift.sberbank.ru/ru/person`.
+
 Сам кроулинг linkinator'а не используется, т.к. может зависать на редиректах пока что.
 
 Авторы linkinator пока не хотят изменений по style / data-атрибутам, поэтому
