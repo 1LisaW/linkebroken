@@ -1,8 +1,10 @@
 const path = require('path');
 const conf = require('dotenv').config();
-const timeout = require('connect-timeout');
+const pkg = require('../package');
+const gaxios = require('gaxios');
+// const timeout = require('connect-timeout');
 
-const MAX_TIMEOUT = 5 * 60 * 1000;
+// const MAX_TIMEOUT = 5 * 60 * 1000;
 
 //const linkinator = require('linkinator');
 const linkinator = require('linkinator-css-edition');
@@ -35,6 +37,21 @@ server.get('/', (req, res) => {
     res.send('linkebroken server');
 });
 
+server.get('/api/health', async function (req, res) {
+    const response = await gaxios.request({
+        method: 'GET',
+        url: 'https://www.sberbank.ru',
+        responseType: 'text',
+        validateStatus: () => true,
+    });
+
+    res.send({
+        version: pkg.version,
+        status: response.status,
+        contentType: response.headers['content-type'] || '',
+    });
+});
+
 server.get('/api/broken', async function (req, res) {
     if (!req.query.url) {
         res.send({
@@ -60,7 +77,7 @@ server.get('/api/broken', async function (req, res) {
         });
     }
 
-    // Go ahead and start the scan! As events orccur, we will see them above.
+    // Go ahead and start the scan! As events occur, we will see them above.
     const result = await checker.check({
         path: req.query.url,
         recurse: false,
