@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 const errResponse = url => ({
     links: [
         {
@@ -12,12 +14,14 @@ const errResponse = url => ({
 export async function crawl(url) {
     return new Promise((resolve, reject) => {
         console.log(`fetch ${url}...`);
-        fetch(`/api/broken?url=${url}`)
+        fetch(`/api/broken?url=${url}`, {
+            credentials: 'include'
+        })
             .then(res => {
                 if (res && res.ok) {
                     return res.json();
                 } else {
-                    console.error(`url is ${res.status}`);
+                    console.error(`API is not ok. Status is ${res.status}`);
                     reject(errResponse(url));
                 }
             })
