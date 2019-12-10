@@ -13,9 +13,8 @@ podTemplate(cloud: 'openshift', label: label, serviceAccount: 'jenkins-jnlp', co
   ]
 ){
   node(label) {
-
     stage ('Clone repository') {
-	    checkout scm
+      checkout scm
     }
 
     stage ('Lint Dockerfiles') {
@@ -30,7 +29,6 @@ podTemplate(cloud: 'openshift', label: label, serviceAccount: 'jenkins-jnlp', co
     def imageTagLatest = "latest${normalizedBranchName}"
 
     stage('Build docker image') {
-
       container('docker') {
         docker.withRegistry("https://${env.DOCKER_REGISTRY_DEV_HOST}", "sa") {
           def imageName = "${env.DOCKER_REGISTRY_DEV_HOST}/site/${projectName}:${imageTagVersion}"
@@ -41,7 +39,6 @@ podTemplate(cloud: 'openshift', label: label, serviceAccount: 'jenkins-jnlp', co
           image.push(imageTagLatest)
         }
       }
-
     }
 
     stage('Deploy') {
@@ -58,7 +55,5 @@ podTemplate(cloud: 'openshift', label: label, serviceAccount: 'jenkins-jnlp', co
         """
       }
     }
-
   }
-
 }

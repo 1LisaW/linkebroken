@@ -1,4 +1,4 @@
-import { STATUS_BROKEN } from '../constants';
+import { STATUS_BROKEN } from '../../constants';
 
 export const TYPE_ALL = 1;
 export const TYPE_BROKEN = 2;
