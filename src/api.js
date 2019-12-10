@@ -2,7 +2,7 @@ const errResponse = url => ({
     links: [
         {
             url,
-            status: '???',
+            status: 'X_X',
             state: 'BROKEN'
         }
     ],
@@ -17,7 +17,7 @@ export async function crawl(url) {
                 if (res && res.ok) {
                     return res.json();
                 } else {
-                    console.error(`url is ${res.statusCode}`);
+                    console.error(`url is ${res.status}`);
                     reject(errResponse(url));
                 }
             })
