@@ -1,5 +1,8 @@
 const path = require('path');
 const conf = require('dotenv').config();
+const timeout = require('connect-timeout');
+
+const MAX_TIMEOUT = 5 * 60 * 1000;
 
 //const linkinator = require('linkinator');
 const linkinator = require('linkinator-css-edition');
@@ -41,6 +44,11 @@ server.use(express.static(path.resolve('./dist')));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 
+server.use(timeout(MAX_TIMEOUT));
+server.use(function (req, res, next){
+    if (!req.timedout) next();
+});
+
 server.get('/', (req, res) => {
     res.send('linkebroken server');
 });
@@ -57,7 +65,7 @@ server.get('/api/broken', async function (req, res) {
         path: req.query.url,
         recurse: false,
         silent: true,
-        concurrency: IS_DEV ? 30 : 1,
+        concurrency: IS_DEV ? 30 : 40,
         ...config,
     });
 
