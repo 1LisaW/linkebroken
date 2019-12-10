@@ -15,7 +15,7 @@ export async function crawl(url) {
         fetch(`/api/broken?url=${url}`)
             .then(res => {
                 if (res && res.ok) {
-                    res.json()
+                    resolve(res.json());
                 } else {
                     console.error(`url is ${res.statusCode}`);
                     reject(errResponse(url));
