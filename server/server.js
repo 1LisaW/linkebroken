@@ -10,24 +10,6 @@ const linkinator = require('linkinator-css-edition');
 const IS_DEV = !!process.env.DEV;
 const IS_DISABLE_EXTERNAL = !!process.env.DISABLE_EXTERNAL;
 
-// create a new `LinkChecker` that we'll use to run the scan.
-const checker = new linkinator.LinkChecker();
-if (IS_DEV) {
-    // Respond to the beginning of a new page being scanned
-    checker.on('pagestart', url => {
-        console.log(`Scanning ${url}`);
-    });
-
-    // After a page is scanned, check out the results!
-    checker.on('link', res => {
-        if (res.state === 'SKIPPED') {
-            return;
-        }
-        // check the specific url that was scanned
-        console.log(`${res.state} ${res.status} ${res.url}`);
-    });
-}
-
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -60,12 +42,30 @@ server.get('/api/broken', async function (req, res) {
         }, 400);
     }
 
+    // create a new `LinkChecker` that we'll use to run the scan.
+    const checker = new linkinator.LinkChecker();
+    if (IS_DEV) {
+        // Respond to the beginning of a new page being scanned
+        checker.on('pagestart', url => {
+            console.log(`Scanning ${url}`);
+        });
+
+        // After a page is scanned, check out the results!
+        checker.on('link', res => {
+            if (res.state === 'SKIPPED') {
+                return;
+            }
+            // check the specific url that was scanned
+            console.log(`${res.state} ${res.status} ${res.url}`);
+        });
+    }
+
     // Go ahead and start the scan! As events orccur, we will see them above.
     const result = await checker.check({
         path: req.query.url,
         recurse: false,
         silent: true,
-        concurrency: IS_DEV ? 30 : 40,
+        concurrency: IS_DEV ? 100 : 20,
         ...config,
     });
 
