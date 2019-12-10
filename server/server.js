@@ -38,7 +38,7 @@ server.get('/api/broken', async function (req, res) {
 
     // Respond to the beginning of a new page being scanned
     checker.on('pagestart', url => {
-        console.log(`Scanning ${url}`);
+        // console.log(`Scanning ${url}`);
     });
 
     // After a page is scanned, check out the results!
@@ -47,7 +47,7 @@ server.get('/api/broken', async function (req, res) {
             return;
         }
         // check the specific url that was scanned
-        console.log(`${res.state} ${res.status} ${res.url}`);
+        // console.log(`${res.state} ${res.status} ${res.url}`);
     });
 
     // Go ahead and start the scan! As events orccur, we will see them above.
