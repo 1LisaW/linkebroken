@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Form from './Form/Form';
 import Results from './Results/Results';
 
-import pkg from '../package';
+import pkg from '../package.json';
 import { crawl } from './api';
 import config from '../server/config';
 
@@ -204,6 +204,10 @@ function getVisibleUrl(url, hostnames = []) {
     }
     try {
         hostnames.forEach(hostname => {
+            // хак, чтобы красивые ссылки были
+            if (hostname === 'sberbank.ru') {
+                hostname = 'www.sberbank.ru';
+            }
             // но только если https
             const regExp = new RegExp(`^https://${hostname.replace(/\./, '\\.')}`);
             visibleUrl = visibleUrl.replace(regExp, '');

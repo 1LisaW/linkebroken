@@ -35,9 +35,24 @@ function Link({ visibleUrl, url, state }) {
 
 export default function LinkInfo({ link, showRedirects }) {
     const { url, visibleOriginalUri, visibleUrl, state, status, originalUri } = link;
+
+    if (!showRedirects) {
+        // показываем оригинал ссылки сначала
+        return (
+            <>
+                {state === STATUS_BROKEN ? `${status} ` : ''}
+                <Link
+                    url={originalUri || url}
+                    visibleUrl={visibleOriginalUri || visibleUrl}
+                    state={state}
+                />
+            </>
+        )
+    }
+
     return (
         <>
-            {showRedirects && originalUri && (
+            {originalUri && (
                 <>
                     <Link
                         url={originalUri}
