@@ -164,6 +164,11 @@ export default function App() {
                     ...results.urls,
                 };
 
+                if (results.queue.length === 1 && results.queue[0].stop) {
+                    console.log('do nothing');
+                    return;
+                }
+                
                 setResults({
                     ...results,
                     currentUrl: '',
@@ -228,6 +233,12 @@ function handleStart(options, setOptions, results, setResults) {
             started: false,
         });
 
+        // TODO просто абортить фетч!
+        // если в процессе запрос, очищаем очередь
+        while (results.queue.length) {
+            results.queue.shift();
+        }
+        results.queue.push({stop: true});
         // не теряем найденное
         setResults({
             ...results,
