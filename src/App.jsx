@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Form from './Form/Form';
 import Results from './Results/Results';
 
+import pkg from '../package';
 import { crawl } from './api';
 import config from '../server/config';
 
@@ -181,7 +182,7 @@ export default function App() {
 
     return (
         <div className="app">
-            <h1>ЛинкеБрокен</h1>
+            <h1>ЛинкеБрокен, v{pkg.version}</h1>
             <Form options={options} onChange={setOptions} onStart={() => {
                 handleStart(options, setOptions, results, setResults);
             }} />
