@@ -1,5 +1,5 @@
-export const STATUS_OK = 'OK';
-export const STATUS_BROKEN = 'BROKEN';
-export const STATUS_SKIPPED = 'SKIPPED';
+export const STATE_OK = 'OK';
+export const STATE_BROKEN = 'BROKEN';
+export const STATE_SKIPPED = 'SKIPPED';
 // ненастоящий
-export const STATUS_REDIRECT = 'REDIRECT';
+export const STATE_REDIRECT = 'REDIRECT';

@@ -4,7 +4,7 @@ import LinkInfo from './LinkInfo/LinkInfo';
 import Filters from './Filters/Filters';
 import Header from './Header/Header';
 
-import { STATUS_SKIPPED, STATUS_BROKEN, STATUS_OK } from '../constants';
+import { STATE_SKIPPED, STATE_BROKEN, STATE_OK } from '../constants';
 
 import './Results.css';
 
@@ -81,14 +81,14 @@ function Page({
         links: [],
     }
 }) {
-    const showPage = filters.passed.value || page.links.filter(({ state }) => state === STATUS_BROKEN).length;
+    const showPage = filters.passed.value || page.links.filter(({ state }) => state === STATE_BROKEN).length;
     if (!showPage) {
         return <></>;
     }
 
     const pageLink = page.links.find(link => !link.parent) || {
         url: pageUrl,
-        state: page.passed ? STATUS_OK : STATUS_BROKEN,
+        state: page.passed ? STATE_OK : STATE_BROKEN,
     };
 
     return (
@@ -122,9 +122,9 @@ function showLink(link, filters) {
 
     // остаточные фильтры
     return !(
-        !filters.broken.value && state === STATUS_BROKEN ||
-        !filters.ok.value && state === STATUS_OK ||
-        !filters.skipped.value && state === STATUS_SKIPPED
+        !filters.broken.value && state === STATE_BROKEN ||
+        !filters.ok.value && state === STATE_OK ||
+        !filters.skipped.value && state === STATE_SKIPPED
     );
 }
 

@@ -1,18 +1,18 @@
 import React from 'react';
 
-import {STATUS_BROKEN, STATUS_OK, STATUS_REDIRECT, STATUS_SKIPPED} from "../../constants";
+import {STATE_BROKEN, STATE_OK, STATE_REDIRECT, STATE_SKIPPED} from "../../constants";
 
 import './LinkInfo.css';
 
 function getLinkModifier(state) {
     switch (state) {
-        case STATUS_BROKEN:
+        case STATE_BROKEN:
             return 'broken';
-        case STATUS_SKIPPED:
+        case STATE_SKIPPED:
             return 'skipped';
-        case STATUS_REDIRECT:
+        case STATE_REDIRECT:
             return 'redirect';
-        case STATUS_OK:
+        case STATE_OK:
             return 'ok';
         default:
             return 'no';
@@ -40,7 +40,7 @@ export default function LinkInfo({ link, showRedirects }) {
         // показываем оригинал ссылки сначала
         return (
             <>
-                {state === STATUS_BROKEN ? `${status} ` : ''}
+                {state === STATE_BROKEN ? `${status} ` : ''}
                 <Link
                     url={originalUri || url}
                     visibleUrl={visibleOriginalUri || visibleUrl}
@@ -57,12 +57,12 @@ export default function LinkInfo({ link, showRedirects }) {
                     <Link
                         url={originalUri}
                         visibleUrl={visibleOriginalUri}
-                        state={STATUS_REDIRECT}
+                        state={STATE_REDIRECT}
                     />
                     {' ➜ '}
                 </>
             )}
-            {state === STATUS_BROKEN ? `${status} ` : ''}
+            {state === STATE_BROKEN ? `${status} ` : ''}
             <Link
                 url={url}
                 visibleUrl={visibleUrl}

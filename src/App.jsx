@@ -7,7 +7,7 @@ import pkg from '../package.json';
 import { crawl } from './api';
 import config from '../server/config';
 
-import { STATUS_OK } from './constants';
+import { STATE_OK } from './constants';
 
 import './App.css';
 
@@ -95,7 +95,7 @@ export default function App() {
 
                     // отбираем несломанное, не в чеках
                     const newNotBrokenLinks = (pageResult.links || [])
-                        .filter(link => link.state === STATUS_OK)
+                        .filter(link => link.state === STATE_OK)
                         .filter(({url: linkUrl}) => !results.checked[linkUrl]);
                     // отбираем страницы
                     const toCheck = config.filterPages(newNotBrokenLinks, results.hostnames);
@@ -133,7 +133,7 @@ export default function App() {
                 pageResult.links.forEach(link => {
                     const findLink = checkedLinks.find(curLink => curLink.url === link.url);
                     if (findLink) {
-                        if (link.status === STATUS_OK) {
+                        if (link.status === STATE_OK) {
                             findLink.originalUri = link.originalUri;
                             findLink.state = link.state;
                             findLink.status = link.status;
@@ -168,7 +168,7 @@ export default function App() {
                     console.log('do nothing');
                     return;
                 }
-                
+
                 setResults({
                     ...results,
                     currentUrl: '',

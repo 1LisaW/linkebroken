@@ -1,4 +1,4 @@
-import { STATUS_BROKEN } from '../../constants';
+import { STATE_BROKEN } from '../../constants';
 
 export const TYPE_ALL = 1;
 export const TYPE_BROKEN = 2;
@@ -13,10 +13,18 @@ export function getCsv(urls, type) {
     Object.keys(urls).forEach(pageUrl => {
         const links = urls[pageUrl].links;
         links.forEach(link => {
-            if (type === TYPE_BROKEN && link.state !== STATUS_BROKEN) {
+            if (type === TYPE_BROKEN && link.state !== STATE_BROKEN) {
                 return;
             }
-            csv += '\n' + head.map(field => link[field]).join(',');
+            csv += '\n' + head.map(field => {
+                if (!link[field] && field === 'status') {
+                    return '200';
+                }
+                if (!link[field] && field === 'state') {
+                    return '???';
+                }
+                return link[field];
+            }).join(',');
         });
     });
 

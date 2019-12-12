@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import {STATUS_BROKEN} from "../../constants";
+import {STATE_BROKEN} from "../../constants";
 import {getCsv, getCsvName, TYPE_ALL, TYPE_BROKEN} from "./report";
 import pluralize from "./pluralize";
 
@@ -13,7 +13,7 @@ export default function Header({
 }) {
     const urlsKeys = Object.keys(urls);
     const errors = urlsKeys.map(pageUrl => {
-        return urls[pageUrl].links.filter(({ state }) => state === STATUS_BROKEN).length;
+        return urls[pageUrl].links.filter(({ state }) => state === STATE_BROKEN).length;
     }).reduce((sum, cur) => sum + parseInt(cur, 10), 0);
 
     const [reportGenerated, setReportGenerated] = useState(0);
