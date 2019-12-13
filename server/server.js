@@ -58,6 +58,7 @@ server.get('/api/broken', async function (req, res) {
             message: 'Please specify url',
         }, 400);
     }
+    const depth = parseInt(req.query.depth || 1);
 
     // create a new `LinkChecker` that we'll use to run the scan.
     const checker = new linkinator.LinkChecker();
@@ -78,12 +79,25 @@ server.get('/api/broken', async function (req, res) {
     }
 
     // Go ahead and start the scan! As events occur, we will see them above.
+    const {
+        linksAttributes,
+        linksToSkip,
+    } = config;
     const result = await checker.check({
         path: req.query.url,
         recurse: false,
         silent: true,
         concurrency: IS_DEV ? 100 : 10,
-        ...config,
+        linksAttributes,
+        linksToSkip: function (link) {
+            console.log(depth, req.query.url, link);
+            // 0 глубина - это проверить только текущую ссылку
+            if (depth === 0) {
+                return Promise.resolve(link !== req.query.url);
+            }
+
+            return Promise.resolve(linksToSkip(link));
+        }
     });
 
     if (IS_DEV) {

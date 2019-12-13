@@ -68,7 +68,6 @@ export default function App() {
         (async function process() {
             try {
                 let pageResult;
-
                 if (results.urls[url]) {
                     console.warn('уже есть в проверенных!', url);
                     setResults({
@@ -79,14 +78,14 @@ export default function App() {
                 }
 
                 try {
-                    pageResult = await crawl(url);
+                    pageResult = await crawl(url, options.depth);
                 } catch (errorData) {
                     pageResult = errorData;
                 }
 
                 console.log(`${url} handled with ${pageResult.passed ? 'passed' : 'not passed'}`);
 
-                if (level < options.depth) {
+                if (level < options.depth - 1) {
                     // текущая страница чеканная
                     if (!results.checked[url]) {
                         results.checked[url] = 0;

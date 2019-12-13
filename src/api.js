@@ -11,10 +11,10 @@ const errResponse = url => ({
     passed: false,
 });
 
-export async function crawl(url) {
+export async function crawl(url, depth) {
     return new Promise((resolve, reject) => {
         console.log(`fetch ${url}...`);
-        fetch(`/api/broken?url=${url}`, {
+        fetch(`/api/broken?url=${url}&depth=${depth}`, {
             credentials: 'include'
         })
             .then(res => {
