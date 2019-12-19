@@ -101,13 +101,19 @@ function Page({
                 />
             </h3>
             <ul>
-                {page.links.map(link => (
-                    <PageLink
-                        key={link.url}
-                        link={link}
-                        filters={filters}
-                    />
-                ))}
+                {page.links.map(link => {
+                    // пропускаем саму страницу
+                    if (!link.parent) {
+                        return (<></>);
+                    }
+                    return (
+                        <PageLink
+                            key={link.url}
+                            link={link}
+                            filters={filters}
+                        />
+                    )
+                })}
             </ul>
         </li>
     );
