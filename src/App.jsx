@@ -59,6 +59,7 @@ export default function App() {
         const {
             url,
             level,
+            meta,
         } = results.queue.shift();
         setResults({
             ...results,
@@ -146,6 +147,11 @@ export default function App() {
                         visibleOriginalUri: getVisibleUrl(link.originalUri, results.hostnames),
                     });
                 });
+
+                // возвращаем мету внутрь
+                if (checkedLinks[0]) {
+                    checkedLinks[0].meta = meta;
+                }
 
                 // неуспешные - в начало
                 // успешные - в конец
@@ -261,10 +267,19 @@ function handleStart(options, setOptions, results, setResults) {
     });
 
     const queue = options.urls.split('\n')
-        .map(val => val.trim())
-        .filter(Boolean)
-        .map(url => ({
+        .map(val => {
+            const value = (val || '').trim().split('\t');
+            const url = value.shift().trim();
+
+            return {
+                url,
+                meta: value
+            }
+        })
+        .filter(({ url }) => !!url)
+        .map(({ url, meta }) => ({
             url,
+            meta,
             level: 0,
         }));
 

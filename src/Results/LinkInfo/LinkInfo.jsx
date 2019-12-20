@@ -35,7 +35,6 @@ function Link({ visibleUrl, url, state }) {
 
 export default function LinkInfo({ link, showRedirects }) {
     const { url, visibleOriginalUri, visibleUrl, state, status, originalUri } = link;
-
     if (!showRedirects) {
         // показываем оригинал ссылки сначала
         return (
@@ -46,6 +45,8 @@ export default function LinkInfo({ link, showRedirects }) {
                     visibleUrl={visibleOriginalUri || visibleUrl}
                     state={state}
                 />
+                {' '}
+                {link.meta && link.meta.join(' ')}
             </>
         )
     }
@@ -68,6 +69,8 @@ export default function LinkInfo({ link, showRedirects }) {
                 visibleUrl={visibleUrl}
                 state={state}
             />
+            {' '}
+            {link.meta && link.meta.join(' ')}
         </>
     );
 }

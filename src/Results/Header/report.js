@@ -1,4 +1,4 @@
-import { STATE_BROKEN } from '../../constants';
+import {STATE_BROKEN, STATE_SKIPPED} from '../../constants';
 
 export const TYPE_ALL = 1;
 export const TYPE_BROKEN = 2;
@@ -13,6 +13,9 @@ export function getCsv(urls, type) {
     Object.keys(urls).forEach(pageUrl => {
         const links = urls[pageUrl].links;
         links.forEach(link => {
+            if (link.state === STATE_SKIPPED) {
+                return;
+            }
             if (type === TYPE_BROKEN && link.state !== STATE_BROKEN) {
                 return;
             }
@@ -25,6 +28,10 @@ export function getCsv(urls, type) {
                 }
                 return link[field];
             }).join(',');
+            // добавляем мету
+            if (link.meta) {
+                csv += ',' + link.meta.join(',');
+            }
         });
     });
 
