@@ -7,7 +7,7 @@ const gaxios = require('gaxios');
 // const MAX_TIMEOUT = 5 * 60 * 1000;
 
 //const linkinator = require('linkinator');
-const linkinator = require('linkinator-css-edition');
+const linkinator = require('../linkinator/build/src/index');
 
 const IS_DEV = !!process.env.DEV;
 const IS_DISABLE_EXTERNAL = !!process.env.DISABLE_EXTERNAL;
