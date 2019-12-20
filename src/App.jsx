@@ -221,7 +221,12 @@ function getVisibleUrl(url, hostnames = []) {
         // do nothing
     }
     // раскодируем, если кириллица или символы
-    return decodeURIComponent(visibleUrl);
+    try {
+        return decodeURIComponent(visibleUrl);
+    } catch (e) {
+        console.warn(`some decode issue with ${visibleUrl}`);
+        return visibleUrl;
+    }
 }
 
 function handleStart(options, setOptions, results, setResults) {
